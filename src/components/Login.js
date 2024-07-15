@@ -1,51 +1,86 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch()
   const email = useRef(null);
+  const name = useRef(null);
   const password = useRef(null);
 
   const handleButtonClick = () => {
-     
+    if (email.current && password.current) {
       const message = checkValidData(email.current.value, password.current.value);
       setErrorMessage(message);
-     if(message) return;
+      if (message) return;
 
-     if (!isSignInForm){
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed In 
-    const user = userCredential.user;
-    console.log(user);
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-   
-    setErrorMessage(errorCode+"-"+errorMessage )
-  });
-     }
+      if (!isSignInForm) {
+        createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            // Signed In
+            const user = userCredential.user;
+            if (name.current) {
+              updateProfile(user, {
+                displayName: name.current.value,
+                photoURL: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQki1FvPque7lfMihl53yW3rl_U4aJ6CFlg_kAK5U4TwMuSFX5c",
+              })
+                .then(() => {
+                  const {uid, email, displayName, photoURL} = auth.currentUser;
+                  dispatch(
+                    addUser({uid: uid, email:email,displayName:displayName,photoURL:photoURL  })
+                  )
+                  navigate("/browse");
+                })
+                .catch((error) => {
+                  setErrorMessage(error.message);
+                });
+            } else {
+              navigate("/browse");
+            }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
 
-     else{
-      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log(user);
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    setErrorMessage(errorCode+"-"+errorMessage);
-  });
-     }
-};
+            setErrorMessage(errorCode + "-" + errorMessage);
+          });
+      } else {
+        signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log(user);
+            navigate("/browse");
+          })
+
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage(errorCode + "-" + errorMessage);
+          });
+      }
+    }
+  };
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
@@ -69,13 +104,13 @@ const Login = () => {
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
           {!isSignInForm && (
-            <input 
+            <input
+              ref={name}
               type="text"
               placeholder="Full Name"
               className="p-4 my-4 w-full bg-gray-700 rounded"
             />
-          )
-          }
+          )}
           <input
             ref={email}
             type="text"
