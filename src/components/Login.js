@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -13,6 +15,36 @@ const Login = () => {
       const message = checkValidData(email.current.value, password.current.value);
       setErrorMessage(message);
      if(message) return;
+
+     if (!isSignInForm){
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed In 
+    const user = userCredential.user;
+    console.log(user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+   
+    setErrorMessage(errorCode+"-"+errorMessage )
+  });
+     }
+
+     else{
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode+"-"+errorMessage);
+  });
+     }
 };
 
   const toggleSignInForm = () => {
@@ -31,7 +63,7 @@ const Login = () => {
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="w-full md:w-4/12 p-12 bg-black text-white rounded-lg bg-opacity-70"
+          className="w-full md:w-3/12 p-12 bg-black text-white rounded-lg bg-opacity-70"
         >
           <h1 className="font-bold text-3xl py-4">
             {isSignInForm ? "Sign In" : "Sign Up"}
