@@ -7,22 +7,26 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { BG_URL, USER_AVATAR } from "../utils/constants";
 
 const Login = () => {
-  const navigate = useNavigate();
+  
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const email = useRef(null);
   const name = useRef(null);
   const password = useRef(null);
 
   const handleButtonClick = () => {
     if (email.current && password.current) {
-      const message = checkValidData(email.current.value, password.current.value);
+      const message = checkValidData(
+        email.current.value,
+        password.current.value
+      );
       setErrorMessage(message);
       if (message) return;
 
@@ -38,20 +42,26 @@ const Login = () => {
             if (name.current) {
               updateProfile(user, {
                 displayName: name.current.value,
-                photoURL: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQki1FvPque7lfMihl53yW3rl_U4aJ6CFlg_kAK5U4TwMuSFX5c",
-              })
+                photoURL: USER_AVATAR 
+                })
                 .then(() => {
-                  const {uid, email, displayName, photoURL} = auth.currentUser;
+                  const { uid, email, displayName, photoURL } =
+                    auth.currentUser;
                   dispatch(
-                    addUser({uid: uid, email:email,displayName:displayName,photoURL:photoURL  })
-                  )
-                  navigate("/browse");
+                    addUser({
+                      uid: uid,
+                      email: email,
+                      displayName: displayName,
+                      photoURL: photoURL,
+                    })
+                  );
+                  
                 })
                 .catch((error) => {
                   setErrorMessage(error.message);
                 });
             } else {
-              navigate("/browse");
+             
             }
           })
           .catch((error) => {
@@ -69,8 +79,7 @@ const Login = () => {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user);
-            navigate("/browse");
+          
           })
 
           .catch((error) => {
@@ -90,7 +99,7 @@ const Login = () => {
     <div className="relative h-screen w-screen overflow-hidden">
       <Header />
       <img
-        src="https://assets.nflxext.com/ffe/siteui/vlv3/8728e059-7686-4d2d-a67a-84872bd71025/e90516bd-6925-4341-a6cf-0b9f3d0c140a/IN-en-20240708-POP_SIGNUP_TWO_WEEKS-perspective_WEB_34324b52-d094-482b-8c2a-708dc64c9065_large.jpg"
+        src={BG_URL}
         alt="BackgroundImage"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-95"
       />
