@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { auth } from "../utils/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser, removeUser } from '../utils/userSlice';
-import { LOGO, SUPPORTED_LANGUAGES } from '../utils/constants';
-import { toggleGptSearchView } from '../utils/gptSlice';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, removeUser } from "../utils/userSlice";
+import { LOGO, SUPPORTED_LANGUAGES } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
-
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -51,7 +50,7 @@ const Header = () => {
   };
 
   const handleLanguageChange = (e) => {
-  dispatch(changeLanguage(e.target.value));
+    dispatch(changeLanguage(e.target.value));
   };
 
   return (
@@ -65,21 +64,22 @@ const Header = () => {
       {user && (
         <div className="flex items-center p-2">
           {showGptSearch && (
-            <select  onChange={handleLanguageChange}
+            <select
+              onChange={handleLanguageChange}
               className="bg-gray-800 text-white  rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              
+
               //onclick
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
-                <option key={lang.identifier} value={lang.identifier} >
+                <option key={lang.identifier} value={lang.identifier}>
                   {lang.name}
                 </option>
               ))}
             </select>
           )}
-          <button onClick={handleGptSearchClick}
+          <button
+            onClick={handleGptSearchClick}
             className="py-2 px-4 mx-4 my-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
-            
           >
             {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
