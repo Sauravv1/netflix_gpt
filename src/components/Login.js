@@ -11,9 +11,10 @@ import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { BG_URL, USER_AVATAR } from "../utils/constants";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 const Login = () => {
-  
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
@@ -37,13 +38,12 @@ const Login = () => {
           password.current.value
         )
           .then((userCredential) => {
-            // Signed In
             const user = userCredential.user;
             if (name.current) {
               updateProfile(user, {
                 displayName: name.current.value,
-                photoURL: USER_AVATAR 
-                })
+                photoURL: USER_AVATAR,
+              })
                 .then(() => {
                   const { uid, email, displayName, photoURL } =
                     auth.currentUser;
@@ -55,19 +55,15 @@ const Login = () => {
                       photoURL: photoURL,
                     })
                   );
-                  
                 })
                 .catch((error) => {
                   setErrorMessage(error.message);
                 });
-            } else {
-             
             }
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-
             setErrorMessage(errorCode + "-" + errorMessage);
           });
       } else {
@@ -77,11 +73,8 @@ const Login = () => {
           password.current.value
         )
           .then((userCredential) => {
-            // Signed in
             const user = userCredential.user;
-          
           })
-
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -103,13 +96,13 @@ const Login = () => {
         alt="BackgroundImage"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-95"
       />
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-25" />
+      <div className="absolute w-full h-full bg-black opacity-50" />
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="w-full md:w-3/12 p-12 bg-black text-white rounded-lg bg-opacity-70"
+          className="w-full md:w-10/12 lg:w-3/12 p-12 md:p-12 bg-black text-white rounded-lg bg-opacity-70"
         >
-          <h1 className="font-bold text-3xl py-4">
+          <h1 className="font-bold text-3xl py-4 text-center">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
           {!isSignInForm && (
@@ -122,7 +115,7 @@ const Login = () => {
           )}
           <input
             ref={email}
-            type="text"
+            type="email"
             placeholder="Email Address"
             className="p-4 my-4 w-full bg-gray-700 rounded"
           />
@@ -134,12 +127,16 @@ const Login = () => {
           />
           <p className="text-red-500">{errorMessage}</p>
           <button
-            className="p-4 my-6 bg-red-700 w-full rounded-lg"
+            className="p-3 my-6 bg-red-600 w-full rounded-lg hover:bg-red-700 transition"
             onClick={handleButtonClick}
           >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
-          <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>
+
+          <p
+            className="py-4 text-center cursor-pointer"
+            onClick={toggleSignInForm}
+          >
             {isSignInForm
               ? "New to Netflix? Sign Up Now"
               : "Already registered? Sign In Now."}
