@@ -54,21 +54,21 @@ const Header = () => {
   };
 
   return (
-    <div className="absolute w-full px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between items-center">
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row  md:justify-between ">
       <img
         src={LOGO}
         alt="Netflix Logo"
-        className="w-44 mx-auto md:mx-8 md:ml-16"
+        className="w-44 mx-auto md:mx-0"
       />
 
       {user && (
-        <div className="flex items-center p-2">
+        <div className="flex p-2 justify-between">
           {showGptSearch && (
             <select
               onChange={handleLanguageChange}
-              className="bg-gray-800 text-white  rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className= " py-2 px-4 mx-0 md:mx-4 my-2 bg-gray-800 text-white  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 
-              //onclick
+              
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
                 <option key={lang.identifier} value={lang.identifier}>
@@ -79,19 +79,19 @@ const Header = () => {
           )}
           <button
             onClick={handleGptSearchClick}
-            className="py-2 px-4 mx-4 my-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
+            className="py-2 px-4 mx-0 md:mx-4 my-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition duration-300"
           >
             {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
           <img
-            className="w-12 h-12 rounded-full mx-4"
+            className="hidden md:block w-12 h-12 rounded-full mx-4"
             alt="User icon"
             src={user?.photoURL}
             aria-label="User profile picture"
           />
           <button
             onClick={handleSignOut}
-            className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
+            className="py-2 px-4 mx-0 md:mx-4 my-2 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition duration-300"
           >
             Sign Out
           </button>

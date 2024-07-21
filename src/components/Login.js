@@ -11,8 +11,6 @@ import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { BG_URL, USER_AVATAR } from "../utils/constants";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -96,11 +94,12 @@ const Login = () => {
         alt="BackgroundImage"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-95"
       />
+
       <div className="absolute w-full h-full bg-black opacity-50" />
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="w-full md:w-10/12 lg:w-3/12 p-12 md:p-12 bg-black text-white rounded-lg bg-opacity-70"
+          className="w-full md:w-10/12 lg:w-3/12  p-12 md:p-12 bg-black text-white rounded-lg bg-opacity-70"
         >
           <h1 className="font-bold text-3xl py-4 text-center">
             {isSignInForm ? "Sign In" : "Sign Up"}
