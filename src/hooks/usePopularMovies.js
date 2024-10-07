@@ -8,7 +8,7 @@ const usePopularMovies = () => {
 
   const getPopularMovies = async () => {
     const response = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_TMDB_KEY}`,
       API_OPTIONS
     );
     const data = await response.json();
