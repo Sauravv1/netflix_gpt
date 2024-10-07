@@ -8,7 +8,7 @@ const MovieList = ({ title, movies }) => {
         <div className='flex items-center '>
         {movies?.map((movie) => {
           return(
-          <MovieCard key={movie.id} posterPath={movie.poster_path} />
+          <MovieCard   videoData={movie} key={movie.id} posterPath={movie.poster_path} />
 )
 })
 }

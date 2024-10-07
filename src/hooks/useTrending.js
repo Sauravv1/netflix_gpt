@@ -7,7 +7,8 @@ const useTrendingMovies = () => {
   const dispatch = useDispatch();
   const getTrendingMovies = async () => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/trending?api_key=${process.env.REACT_APP_TMDB_KEY}`,
+      `
+https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.REACT_APP_TMDB_KEY}`,
       API_OPTIONS
     );
     const data = await response.json();

@@ -27,3 +27,6 @@ export const MOBILE_LOGO =
   "https://i.ibb.co/mJv0SH4/718-7188480-icon-netflix-logo-png-transparent-png-removebg-preview.png";
 
 export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
+
+export const MOVIE_CONTENT = "movie";
+export const TV_SHOW_CONTENT = "tv";
